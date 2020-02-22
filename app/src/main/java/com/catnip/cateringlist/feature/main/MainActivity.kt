@@ -1,7 +1,8 @@
-package com.catnip.cateringlist
+package com.catnip.cateringlist.feature.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.catnip.cateringlist.R
 
 class MainActivity : AppCompatActivity() {
 
