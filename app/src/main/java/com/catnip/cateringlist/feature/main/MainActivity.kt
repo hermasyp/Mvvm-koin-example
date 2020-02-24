@@ -3,11 +3,15 @@ package com.catnip.cateringlist.feature.main
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log.d
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.catnip.cateringlist.R
+import com.catnip.cateringlist.feature.location.FragmentDialogLocation
 import com.catnip.cateringlist.utils.result.ResultState
 import com.catnip.cateringlist.utils.rv.MarginItemDecoration
 import kotlinx.android.synthetic.main.activity_main.*
@@ -40,7 +44,6 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.catering.observe(this, Observer {
             when (it) {
                 is ResultState.Progress -> {
-                    d(TAG, "CATERING LOADING")
                     pb_catering_list.visibility = View.VISIBLE
                 }
                 is ResultState.Success -> {
@@ -49,10 +52,30 @@ class MainActivity : AppCompatActivity() {
                     adapter.addData(it.data.caterings)
                 }
                 is ResultState.Error -> {
-                    d(TAG, "CATERING ERROR =  " + it.e.message)
+                    Toast.makeText(this,getString(R.string.text_fail_load_catering), Toast.LENGTH_SHORT).show()
                     pb_catering_list.visibility = View.GONE
                 }
             }
         })
     }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle item selection
+        return when (item.itemId) {
+            R.id.menu_location -> {
+                showLocationDialog()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun showLocationDialog() {
+        FragmentDialogLocation.show(supportFragmentManager)
+    }
+
+
 }

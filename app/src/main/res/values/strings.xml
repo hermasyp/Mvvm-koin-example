@@ -1,4 +1,12 @@
 <resources>
-    <string name="app_name">CateringList</string>
+    <string name="app_name">Rekomendasi Katering</string>
     <string name="text_show_total_data">Menampilkan %1$d Catering</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_title_dialog_location">Lokasi Katering</string>
+    <string name="text_title_header_dialog_location">Tentukan Wilayah</string>
+    <string name="text_button_apply">Terapkan</string>
+    <string name="text_fail_load_location">Gagal Memuat Data Lokasi</string>
+    <string name="text_fail_load_catering">Gagal Memuat Data Katering</string>
 </resources>

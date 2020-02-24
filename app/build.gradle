@@ -72,4 +72,5 @@ dependencies {
     implementation deps.retrofit.retrofitRx
     implementation deps.retrofit.retrofitOkhttpLogging
 
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 }
