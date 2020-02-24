@@ -1,0 +1,54 @@
+package com.catnip.cateringlist.feature.main
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.catnip.cateringlist.model.Catering
+import com.catnip.cateringlist.model.Caterings
+import com.catnip.cateringlist.network.RetrofitApi
+import com.catnip.cateringlist.utils.result.*
+import com.catnip.cateringlist.utils.rx.AppScheduler
+import com.catnip.cateringlist.utils.rx.addTo
+import com.catnip.cateringlist.utils.rx.performOnBackOutOnMain
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.subjects.PublishSubject
+import retrofit2.Response
+
+/**
+Written with love by Muhammad Hermas Yuda Pamungkas
+Github : https://github.com/hermasyp
+ **/
+
+class MainRepository(
+    private val api: RetrofitApi,
+    private val scheduler: AppScheduler,
+    private val compositeDisposable: CompositeDisposable
+) {
+
+    private val cateringsData: PublishSubject<ResultState<Caterings>> =
+        PublishSubject.create<ResultState<Caterings>>()
+
+    val cateringLiveData: LiveData<ResultState<Caterings>> by lazy {
+        cateringsData.toLiveData(compositeDisposable)
+    }
+
+    fun fetchCatering() {
+        cateringsData.loading(true)
+        api.getCateringList()
+            .performOnBackOutOnMain(scheduler)
+            .subscribe(
+                {
+                    cateringsData.success(it.data)
+                },
+                {
+                    cateringsData.error(it)
+                }
+            ).addTo(compositeDisposable)
+    }
+
+
+    fun destroy() {
+        compositeDisposable.dispose()
+    }
+
+}
+

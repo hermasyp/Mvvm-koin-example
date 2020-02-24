@@ -1,20 +1,20 @@
-package com.catnip.cateringlist.feature.main
+package com.catnip.cateringlist.feature.location
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.catnip.cateringlist.model.Caterings
+import com.catnip.cateringlist.model.Locations
 import com.catnip.cateringlist.utils.result.ResultState
 
 /**
 Written with love by Muhammad Hermas Yuda Pamungkas
 Github : https://github.com/hermasyp
  **/
-class MainViewModel(val repository: MainRepository) : ViewModel() {
-    val catering : LiveData<ResultState<Caterings>> by lazy {
-        repository.cateringLiveData
+class LocationViewModel (val repository: LocationRepository) : ViewModel() {
+    val locations : LiveData<ResultState<Locations>> by lazy {
+        repository.locationsLiveData
     }
 
-    fun getCateringData(){
+    fun getLocationData(){
         repository.fetchCatering()
     }
 
