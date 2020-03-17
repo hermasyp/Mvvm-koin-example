@@ -10,9 +10,9 @@ Written with love by Muhammad Hermas Yuda Pamungkas
 Github : https://github.com/hermasyp
  **/
 class LocationViewModel (val repository: LocationRepository) : ViewModel() {
-    val locations : LiveData<ResultState<Locations>> by lazy {
+    val locations : LiveData<ResultState<Locations>> =
         repository.locationsLiveData
-    }
+
 
     fun getLocationData(){
         repository.fetchCatering()

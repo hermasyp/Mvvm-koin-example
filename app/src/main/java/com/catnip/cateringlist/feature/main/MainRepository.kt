@@ -23,31 +23,25 @@ class MainRepository(
     private val scheduler: AppScheduler,
     private val compositeDisposable: CompositeDisposable
 ) {
-
-    private val cateringsData: PublishSubject<ResultState<Caterings>> =
-        PublishSubject.create<ResultState<Caterings>>()
-
-    val cateringLiveData: LiveData<ResultState<Caterings>> by lazy {
-        cateringsData.toLiveData(compositeDisposable)
-    }
-
+    val cateringLiveData = MutableLiveData<ResultState<Caterings>>()
     fun fetchCatering() {
-        cateringsData.loading(true)
+        cateringLiveData.value = ResultState.loading(true)
         api.getCateringList()
             .performOnBackOutOnMain(scheduler)
             .subscribe(
                 {
-                    cateringsData.success(it.data)
+                    cateringLiveData.value = ResultState.success(it.data)
                 },
                 {
-                    cateringsData.error(it)
+                    cateringLiveData.value = ResultState.error(it)
+
                 }
             ).addTo(compositeDisposable)
     }
 
 
     fun destroy() {
-        compositeDisposable.dispose()
+        compositeDisposable.clear()
     }
 
 }

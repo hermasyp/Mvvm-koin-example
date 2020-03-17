@@ -25,30 +25,27 @@ class LocationRepository(
     private val compositeDisposable: CompositeDisposable
 ) {
 
-    private val locationsData: PublishSubject<ResultState<Locations>> =
-        PublishSubject.create<ResultState<Locations>>()
-
-    val locationsLiveData: LiveData<ResultState<Locations>> by lazy {
-        locationsData.toLiveData(compositeDisposable)
-    }
+    val locationsLiveData = MutableLiveData<ResultState<Locations>>()
 
     fun fetchCatering() {
-        locationsData.loading(true)
+        locationsLiveData.value = ResultState.loading(true)
         api.getCateringLocation()
             .performOnBackOutOnMain(scheduler)
             .subscribe(
                 {
-                    locationsData.success(it.data)
+                    locationsLiveData.value = ResultState.success(it.data)
+
                 },
                 {
-                    locationsData.error(it)
+                    locationsLiveData.value = ResultState.error(it)
+
                 }
             ).addTo(compositeDisposable)
     }
 
 
     fun destroy() {
-        compositeDisposable.dispose()
+        compositeDisposable.clear()
     }
 
 }
